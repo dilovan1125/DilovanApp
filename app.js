@@ -1,3 +1,4 @@
+alert("ملف app.js يعمل ✅");
 // إظهار الصفحات
 function showPage(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.add('hidden'));
