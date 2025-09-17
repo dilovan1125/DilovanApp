@@ -4,188 +4,85 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>نظام محاسبة المتجر</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://unpkg.com/@zxing/library@0.20.0"></script>
-</head>
-<body class="bg-gray-100 text-gray-900">
 
-<nav class="bg-blue-600 text-white flex justify-around p-4">
-  <button onclick="showPage('sales')" class="font-bold">💰 المبيعات</button>
-  <button onclick="showPage('products')" class="font-bold">📦 المنتجات</button>
-  <button onclick="showPage('log')" class="font-bold">📝 السجل</button>
-  <button onclick="showPage('profit')" class="font-bold">📈 الربح</button>
+<!-- ربط ملف التنسيقات -->
+<link rel="stylesheet" href="style.css">
+
+<!-- مكتبة ماسح الباركود -->
+<script src="libs/zxing.min.js"></script>
+</head>
+<body>
+
+<header>
+  <h1>نظام محاسبة المتجر</h1>
+</header>
+
+<nav>
+  <ul>
+    <li><a href="#" onclick="showPage('sales')">💰 المبيعات</a></li>
+    <li><a href="#" onclick="showPage('products')">📦 المنتجات</a></li>
+    <li><a href="#" onclick="showPage('log')">📝 السجل</a></li>
+    <li><a href="#" onclick="showPage('stock')">🏬 المخزون</a></li>
+    <li><a href="#" onclick="showPage('profit')">📈 صافي الربح</a></li>
+  </ul>
 </nav>
 
-<div id="pages" class="p-4">
-
-  <!-- صفحة المبيعات -->
+<main>
+  <!-- المبيعات -->
   <section id="sales" class="page hidden">
-    <h2 class="text-xl font-bold mb-4">صفحة المبيعات</h2>
-    <button onclick="startScanner('sale')" class="bg-green-600 text-white px-4 py-2 rounded">📷 مسح باركود</button>
-    <div id="sale-result" class="mt-4"></div>
-    <video id="video-sale" class="mt-4 w-full max-w-sm"></video>
-    <div class="mt-4">
-      <input id="sale-qty" type="number" placeholder="الكمية" class="border p-2">
-      <input id="sale-price" type="number" placeholder="سعر البيع" class="border p-2">
-      <button onclick="addSale()" class="bg-blue-600 text-white px-4 py-2 rounded">إضافة عملية بيع</button>
+    <h2>صفحة المبيعات</h2>
+    <button onclick="startScanner('sale')">📷 مسح باركود</button>
+    <div id="sale-result"></div>
+    <video id="video-sale"></video>
+    <div class="form">
+      <input id="sale-qty" type="number" placeholder="الكمية">
+      <input id="sale-price" type="number" placeholder="سعر البيع">
+      <button onclick="addSale()">إضافة عملية بيع</button>
     </div>
   </section>
 
-  <!-- صفحة المنتجات -->
+  <!-- المنتجات -->
   <section id="products" class="page hidden">
-    <h2 class="text-xl font-bold mb-4">صفحة المنتجات</h2>
-    <button onclick="startScanner('product')" class="bg-green-600 text-white px-4 py-2 rounded">📷 مسح باركود</button>
-    <div id="product-result" class="mt-4"></div>
-    <video id="video-product" class="mt-4 w-full max-w-sm"></video>
-    <div class="mt-4">
-      <input id="prod-code" type="text" placeholder="باركود" class="border p-2">
-      <input id="prod-name" type="text" placeholder="اسم المنتج" class="border p-2">
-      <input id="prod-cost" type="number" placeholder="سعر التكلفة" class="border p-2">
-      <input id="prod-price" type="number" placeholder="سعر البيع" class="border p-2">
-      <input id="prod-qty" type="number" placeholder="الكمية" class="border p-2">
-      <button onclick="addProduct()" class="bg-blue-600 text-white px-4 py-2 rounded">إضافة منتج</button>
+    <h2>صفحة المنتجات</h2>
+    <button onclick="startScanner('product')">📷 مسح باركود</button>
+    <div id="product-result"></div>
+    <video id="video-product"></video>
+    <div class="form">
+      <input id="prod-code" type="text" placeholder="باركود">
+      <input id="prod-name" type="text" placeholder="اسم المنتج">
+      <input id="prod-cost" type="number" placeholder="سعر التكلفة">
+      <input id="prod-price" type="number" placeholder="سعر البيع">
+      <input id="prod-qty" type="number" placeholder="الكمية">
+      <button onclick="addProduct()">إضافة منتج</button>
     </div>
-    <h3 class="mt-4 font-bold">قائمة المنتجات</h3>
-    <table id="products-table" class="table-auto w-full border mt-2 bg-white"></table>
-    <div class="mt-4 font-bold">إجمالي قيمة المخزون: <span id="total-stock"></span></div>
+    <h3>قائمة المنتجات</h3>
+    <table id="products-table"></table>
+    <div>إجمالي قيمة المخزون: <span id="total-stock"></span></div>
   </section>
 
-  <!-- صفحة السجل -->
+  <!-- السجل -->
   <section id="log" class="page hidden">
-    <h2 class="text-xl font-bold mb-4">سجل المبيعات</h2>
-    <table id="log-table" class="table-auto w-full border mt-2 bg-white"></table>
+    <h2>سجل المبيعات</h2>
+    <table id="log-table"></table>
   </section>
 
-  <!-- صفحة الربح -->
+  <!-- المخزون -->
+  <section id="stock" class="page hidden">
+    <h2>تفاصيل المخزون</h2>
+    <table id="stock-table"></table>
+  </section>
+
+  <!-- صافي الربح -->
   <section id="profit" class="page hidden">
-    <h2 class="text-xl font-bold mb-4">صافي الربح</h2>
-    <div class="font-bold text-2xl text-green-700" id="profit-total">0</div>
+    <h2>صافي الربح</h2>
+    <div id="profit-total" class="profit-box">0</div>
   </section>
+</main>
 
-</div>
+<footer>
+  <p>© نظام محاسبة المتجر</p>
+</footer>
 
-<script>
-function showPage(id){
-  document.querySelectorAll('.page').forEach(p=>p.classList.add('hidden'));
-  document.getElementById(id).classList.remove('hidden');
-}
-showPage('sales');
-
-//------------------ IndexedDB ------------------//
-let db;
-const request = indexedDB.open("StoreDB", 1);
-
-request.onupgradeneeded = function(e) {
-  db = e.target.result;
-  if (!db.objectStoreNames.contains("products")) {
-    db.createObjectStore("products", { keyPath: "code" });
-  }
-  if (!db.objectStoreNames.contains("sales")) {
-    db.createObjectStore("sales", { autoIncrement: true });
-  }
-};
-
-request.onsuccess = function(e) {
-  db = e.target.result;
-  renderTables();
-};
-request.onerror = e => console.error("DB error", e);
-
-// إضافة منتج
-function addProduct(){
-  const tx = db.transaction("products","readwrite");
-  const store = tx.objectStore("products");
-  store.put({
-    code: document.getElementById('prod-code').value || scannedCode || 'يدوي',
-    name: document.getElementById('prod-name').value,
-    cost: parseFloat(document.getElementById('prod-cost').value),
-    price: parseFloat(document.getElementById('prod-price').value),
-    qty: parseInt(document.getElementById('prod-qty').value)
-  });
-  tx.oncomplete = ()=> renderTables();
-}
-
-// إضافة عملية بيع
-function addSale(){
-  const code = scannedCode || document.getElementById('prod-code').value;
-  const qty = parseInt(document.getElementById('sale-qty').value);
-  const price = parseFloat(document.getElementById('sale-price').value);
-
-  const tx = db.transaction(["products","sales"],"readwrite");
-  const pStore = tx.objectStore("products");
-  const sStore = tx.objectStore("sales");
-
-  const req = pStore.get(code);
-  req.onsuccess = ()=>{
-    const prod = req.result;
-    if(prod){
-      prod.qty -= qty;
-      pStore.put(prod);
-      sStore.add({
-        code,
-        qty,
-        price,
-        cost: prod.cost,
-        date: new Date().toLocaleString()
-      });
-    }
-  };
-  tx.oncomplete = ()=> renderTables();
-}
-
-// عرض الجداول
-function renderTables(){
-  // منتجات
-  const pTx = db.transaction("products","readonly");
-  const pStore = pTx.objectStore("products");
-  const pReq = pStore.getAll();
-  pReq.onsuccess = ()=>{
-    const products = pReq.result;
-    let pt = '<tr><th>باركود</th><th>اسم</th><th>تكلفة</th><th>بيع</th><th>كمية</th></tr>';
-    let total=0;
-    products.forEach(p=>{
-      pt+=`<tr><td>${p.code}</td><td>${p.name}</td><td>${p.cost}</td><td>${p.price}</td><td>${p.qty}</td></tr>`;
-      total += p.cost * p.qty;
-    });
-    document.getElementById('products-table').innerHTML=pt;
-    document.getElementById('total-stock').textContent= total;
-
-    // سجل
-    const sTx = db.transaction("sales","readonly");
-    const sStore = sTx.objectStore("sales");
-    const sReq = sStore.getAll();
-    sReq.onsuccess = ()=>{
-      const sales = sReq.result;
-      let lt = '<tr><th>تاريخ</th><th>باركود</th><th>كمية</th><th>سعر البيع</th><th>سعر التكلفة</th><th>ربح</th></tr>';
-      let profit=0;
-      sales.forEach(s=>{
-        let p = (s.price - s.cost) * s.qty;
-        profit+=p;
-        lt+=`<tr><td>${s.date}</td><td>${s.code}</td><td>${s.qty}</td><td>${s.price}</td><td>${s.cost}</td><td>${p}</td></tr>`;
-      });
-      document.getElementById('log-table').innerHTML=lt;
-      document.getElementById('profit-total').textContent = profit;
-    };
-  };
-}
-
-// ماسح باركود
-let scannedCode = null;
-function startScanner(type){
-  scannedCode=null;
-  const codeReader = new ZXing.BrowserMultiFormatReader();
-  const videoId = type==='sale' ? 'video-sale' : 'video-product';
-  codeReader.decodeFromVideoDevice(null, videoId, (result,err)=>{
-    if(result){
-      scannedCode = result.text;
-      if(type==='sale')
-        document.getElementById('sale-result').textContent = 'تم قراءة: '+scannedCode;
-      else
-        document.getElementById('product-result').textContent = 'تم قراءة: '+scannedCode;
-      codeReader.reset();
-    }
-  });
-}
-</script>
+<script src="app.js"></script>
 </body>
 </html>
