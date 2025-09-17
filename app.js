@@ -1,4 +1,6 @@
-alert("ملف app.js يعمل ✅");
+window.onerror = function(msg, src, lineno, colno, err){
+    alert("خطأ في السطر " + lineno + ": " + msg);
+};
 // إظهار الصفحات
 function showPage(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.add('hidden'));
