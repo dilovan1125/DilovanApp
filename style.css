@@ -1,0 +1,117 @@
+/* الخطوط والألوان الأساسية */
+body {
+  font-family: "Tajawal", Arial, sans-serif;
+  background: #f4f4f4;
+  color: #333;
+  margin: 0;
+}
+
+/* رأس الصفحة */
+header {
+  background: #1e40af; /* أزرق غامق */
+  color: #fff;
+  text-align: center;
+  padding: 1rem 0;
+}
+
+/* شريط التنقل */
+nav {
+  background: #2563eb; /* أزرق متوسط */
+}
+nav ul {
+  display: flex;
+  justify-content: space-around;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+nav li a {
+  display: block;
+  padding: 0.8rem 1rem;
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+nav li a:hover {
+  background: #1e3a8a;
+}
+
+/* المحتوى */
+main {
+  padding: 1rem;
+}
+
+/* أقسام الصفحات */
+.page {
+  display: none;
+  margin-top: 1rem;
+}
+.page h2 {
+  margin-top: 0;
+  color: #1e40af;
+}
+.page table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.page table th, .page table td {
+  border: 1px solid #ccc;
+  padding: 0.5rem;
+  text-align: center;
+}
+.page table th {
+  background: #e0e7ff;
+  font-weight: bold;
+}
+
+/* النماذج والأزرار */
+.form {
+  margin-top: 1rem;
+}
+.form input {
+  padding: 0.5rem;
+  margin: 0.3rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+.form button {
+  padding: 0.5rem 1rem;
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.form button:hover {
+  background: #1e3a8a;
+}
+
+/* فيديو الكاميرا */
+video {
+  max-width: 100%;
+  margin-top: 0.5rem;
+  border: 2px solid #2563eb;
+  border-radius: 8px;
+}
+
+/* صندوق الربح */
+.profit-box {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #16a34a; /* أخضر */
+  background: #d1fae5;
+  padding: 1rem;
+  border-radius: 8px;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+/* التذييل */
+footer {
+  background: #1e40af;
+  color: #fff;
+  text-align: center;
+  padding: 0.5rem;
+  margin-top: 2rem;
+}
